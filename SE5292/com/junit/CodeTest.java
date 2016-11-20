@@ -13,7 +13,7 @@ public class CodeTest {
 	
 private static UserPOJO user = null;
 	
-// Testing code execution for "Good Data " i.e user name /ID/Password are provided and in appropriate format
+// Testing code execution for "Good Data" i.e user name /ID/Password are provided and in appropriate format
 //---------------------------------------------------------------------------------------------------------
 	@BeforeClass
 	public static void createUserObj() {
@@ -38,7 +38,7 @@ private static UserPOJO user = null;
 //---------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------
 	
-// Testing code execution for "Bad Data" i.e user name /ID/Password are provided and in appropriate format
+// Testing code execution for "Bad Data" i.e user name /ID/Password are provided in appropriate format
 	@Test
 	public void testUserSignUpFailureBadData() {
 		
@@ -91,7 +91,8 @@ private static UserPOJO user = null;
 	public void userSignupBoundaryAnalysis() {
 		
 		//Negative test cases in Boundary analysis
-	String[] testuserName = {"vi", "ai", "v","abcdefghijklmnopqrstuvwxyzqwea","abcdefghijklmnopqrstuvwxyzqweaa","abcde fghijkl mnopqrstuvwxyzqwe"};	
+	String[] testuserName = {"vi", "ai", "v","abcdefghijklmnopqrstuvwxyzqwea","abcdefghijklmnopqrstuvwxyzqweaa",
+							"abcde fghijkl mnopqrstuvwxyzqwe"};	
 	String[] testuserID = {"11111", "99999","111110","1000000","9999999","1234567","99999","1111111"};	
 	for(String uname: testuserName){
 		for(String uid: testuserID){
@@ -119,26 +120,47 @@ private static UserPOJO user = null;
 //---------------------------------------------------------------------------------------------------------	
 
 	//Testing code for Simple Loop
-	/*
-	 * System loops through the test reports of all the user data entered to find best of all grades
-	 * Scenerio: Max No. of users who submitted the data = 50
-	 * Case1: 10 users submitted data
-	 * Case2: 50 users submitted data
-	 * Case3: 51 users submitted data
-	 * 
-	 * 
-	 */
-	@Test
-	public void LoopReportGeneration() {
-		ReportGeneration report = new ReportGeneration();
-		int noOfReports[]={10,50,51};
-		for(int i=0;i<noOfReports.length;i++){
-	 		int resultCount = report.getTotalReportsEvaluated();
-	 		assertEquals("Assert case to check no. of reports evaluated", noOfReports[i],resultCount);
+		/*
+		 * System loops through the userID  of all the users to check if the UserID is already taken
+		 * 
+		 * 
+		 */
+		@Test
+		public void LoopTestUserID() {
+			user.setName("Sandeep");
+			user.setId("sds0307");
+			user.setPassword("qwerty");
+			CredentialTest ct = new CredentialTest(user);
+			
+			//Checks if userID already exists.
+			assertEquals("Assert case to check userID exists", true,ct.CheckIfUserIDExists());	
+		}
+		
+		
+		//Testing All Branch Coverage
+		/*
+		 * System takes in the password provided by a new user and returns the validation status (message)
+		 * of the password
+		 */
+		@Test
+		public void AllBranchCoverage(){
+			
+			String[] ErrorsMessages = {"Password must contain atleast 1 number",
+					"Password must contain atleast 1 special character",
+					"Password must contain atleast 1 alphabet",
+					"Password must contain atleast 1 capital letter",
+					"Password must be atleast 8 characters long",
+					"Valid Password"};
+			
+			String[] Passwords = {"qwertyAbc*","Qwerty123","123456*","qwerty123*","qwe123*","Qwerty1234*"};
+			CredentialTest ct = new CredentialTest(user);
+			
+			for(int i =0; i<6;i++)
+			{
+				assertEquals("Assert case to check if password validation "
+							+ "returns the right message", 
+							ErrorMessages[i],ct.PasswordValidationMessage(Passwords[i]));
 			}
-
-		
-		
-	}
+		}
 		
 }

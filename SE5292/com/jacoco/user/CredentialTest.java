@@ -1,5 +1,7 @@
 package com.jacoco.user;
 
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import com.jacoco.pojo.UserPOJO;
@@ -61,4 +63,50 @@ public class CredentialTest {
 		int validate = 0; //  will be 0 if record matches with db else 1
 		return validate == 0 ? true : false;
 	}
+
+	public boolean CheckIfUserIDExists(){
+		//Check if User ID is already taken by some other user
+		ArrayList<String> UserIDList = new ArrayList<String>(); //fetch all existing UserIDList from DB
+		for(String uid: UserIDList){
+			if(uid.equals(this.user.getId())){
+				return true;
+			}
+		}
+		return false;		
+	}
+
+	public Object PasswordValidationMessage(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/*
+
+	public String PasswordValidationMessage(String password){
+		if(password has no numbers)
+		{
+			return "Password must contain at least 1 number";
+		}
+		else if(password has no special characters)
+		{
+			return "Password must contain at least 1 special character";
+		}
+		else if(password has no alphabets)
+		{
+			return "Password must contain at least 1 alphabet";
+		}
+		else if(password has no capital letter)
+		{
+			return "Password must contain at least 1 capital letter";
+		}
+		else if(password less than 8 characters)
+		{
+			return "Password must be at least 8 characters long";
+		}
+		else
+		{
+			return "Valid Password"
+		}
+	}
+*/
 }
