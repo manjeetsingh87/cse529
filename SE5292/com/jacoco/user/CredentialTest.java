@@ -1,10 +1,10 @@
 package com.jacoco.user;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import com.jacoco.pojo.UserPOJO;
+import com.jacoco.utility.Role;
 
 public class CredentialTest {
 	private final UserPOJO user;
@@ -33,9 +33,10 @@ public class CredentialTest {
 	public boolean signNewUser() {
 		if(null == user)
 			return false;
-		if(null == user.getName() || null == user.getId() || null == user.getPassword())
+		if(null == user.getName() || null == user.getId() || null == user.getPassword() || null == user.getRole())
 			return false;
-		if(user.getName().trim().length() == 0 || user.getId().trim().length() == 0 || user.getPassword().trim().length() == 0)
+		if(user.getName().trim().length() == 0 || user.getId().trim().length() == 0 || user.getPassword().trim().length() == 0
+				|| user.getRole().equals(Role.Admin))
 			return false;
 		
 		//validate password format to match alphanumeric
@@ -75,38 +76,23 @@ public class CredentialTest {
 		return false;		
 	}
 
-	public Object PasswordValidationMessage(String string) {
-		// TODO Auto-generated method stub
-		return null;
+	public String PasswordValidationMessage(String password) {
+		if(!password.matches(".*\\d.*"))
+			return "Password must contain at least 1 number";
+		if(!password.matches("[^A-Za-z0-9]+"))
+			return "Password must contain at least 1 special character";
+		if(!password.matches(".*[a-zA-Z]+.*"))
+			return "Password must contain at least 1 alphabet";
+		if(password.length() < 8)
+			return "Password must be at least 8 characters long";
+		if(hasUpperCase(password.toCharArray()))
+			return "Password must contain atleast 1 upper case letter";
+		
+		return "Valid Password";
 	}
 	
-	/*
-
-	public String PasswordValidationMessage(String password){
-		if(password has no numbers)
-		{
-			return "Password must contain at least 1 number";
-		}
-		else if(password has no special characters)
-		{
-			return "Password must contain at least 1 special character";
-		}
-		else if(password has no alphabets)
-		{
-			return "Password must contain at least 1 alphabet";
-		}
-		else if(password has no capital letter)
-		{
-			return "Password must contain at least 1 capital letter";
-		}
-		else if(password less than 8 characters)
-		{
-			return "Password must be at least 8 characters long";
-		}
-		else
-		{
-			return "Valid Password"
-		}
+	private boolean hasUpperCase(char[] data) {
+		String pwd = String.valueOf(data);
+		return !pwd.equals(pwd.toLowerCase());
 	}
-*/
 }
