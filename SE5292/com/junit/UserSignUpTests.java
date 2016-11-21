@@ -19,6 +19,7 @@ public class UserSignUpTests {
 		user.setName("Vivek");
 		user.setId("vivek123");
 		user.setPassword("Vivek@123");
+		user.setRole("Student");
 	}
 	
 	@AfterClass
